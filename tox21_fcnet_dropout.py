@@ -9,6 +9,10 @@ tf.set_random_seed(456)
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
+test_X,test_y = mnist.test._images,mnist.test._labels
+valid_X,valid_y = mnist.validation._images,mnist.validation._labels
+
+
 
 # _, (train, valid, test), _  = dc.molnet.load_tox21()
 # train_X, train_y, train_w = train.X, train.y, train.w
@@ -81,12 +85,12 @@ with tf.Session() as sess:
         pos += batch_size
     
     train_y_pred = sess.run(y_pred,feed_ditc={x:train_X,keep_prob:1.0})
-    valid_y_ppred = sess.run(y_pred,feed_dict={x_valid,keep_prob:1.0})
-    test_y_pred = sess.run(y_pred.feed_dict={x:x_test,keep_prob:1.0})
+    valid_y_ppred = sess.run(y_pred,feed_dict={x:valid_X,keep_prob:1.0})
+    test_y_pred = sess.run(y_pred,feed_dict={x:test_X,keep_prob:1.0})
     
-train_weighted_score = accuracy_score(train_y, train_y_pred, sample_weight=train_w)
+train_weighted_score = accuracy_score(train_y, train_y_pred)#, sample_weight=train_w)
 print("Train Weighted Classification Accuracy: {train_weighted_score}")
-valid_weighted_score = accuracy_score(valid_y, valid_y_pred, sample_weight=valid_w)
+valid_weighted_score = accuracy_score(valid_y, valid_y_pred)#, sample_weight=valid_w)
 print("Valid Weighted Classification Accuracy: {valid_weighted_score}")
-test_weighted_score = accuracy_score(test_y, test_y_pred, sample_weight=test_w)
+test_weighted_score = accuracy_score(test_y, test_y_pred)#, sample_weight=test_w)
 print("Test Weighted Classification Accuracy: {test_weighted_score}")
